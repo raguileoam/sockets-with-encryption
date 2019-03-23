@@ -3,8 +3,7 @@ import hashlib
 from Crypto.Cipher import AES
 import ssl
 
-#KEY = hashlib.sha256("some random password").digest()	#this will convert any pnemonic string which the user wants to choose as password to a 32 bit encrypted object
-KEY = hashlib.sha256(str("asdas").encode('utf-8')).digest()
+KEY = hashlib.sha256(str("asdas").encode('utf-8')).digest() #this will convert any pnemonic string which the user wants to choose as password to a 32 bit encrypted object
 IV = "abcdefghijklmnop"		#Initialization vector should always be 16 bit
 obj = AES.new(KEY, AES.MODE_CFB, IV)	#creating an object to encrypt our data with
 
@@ -18,16 +17,16 @@ def main():
 
 	ssl_sock.connect((host,port))
 
-	message = input("-> ").encode()
+	message = input("-> ")
 	while message != 'q':
-		#s.send(message)	is what we would have used in a socket program without ssl
-		ssl_sock.write(message)		#instead of the .send() we use .write() for ssl
-		data = ssl_sock.recv(1024)
+		message=message.encode() if len(message)>0 else b' '
+		ssl_sock.write(message)	#instead of the .send() we use .write() for ssl
+		data = ssl_sock.read(1024)
 		print("received data: "+str(data))
 		print("decrypting...")
 		decrypted = obj.decrypt(data)	#using the object we created to decrypt the incoming data
 		print("received from server "+str(decrypted))
-		message = input("-> ").encode()
+		message = input("-> ")
 	ssl_sock.close()
 
 if __name__ == "__main__":
