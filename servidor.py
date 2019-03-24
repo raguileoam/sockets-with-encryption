@@ -1,19 +1,19 @@
-
+# -*- coding: utf-8 -*-
 import threading
 import socket
 from socket import AF_INET, SOCK_STREAM, SO_REUSEADDR, SOL_SOCKET, SHUT_RDWR
 import hashlib
 from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
 import ssl
 from ssl import PROTOCOL_TLS
 
 keyFile = "priv.pem"  # provide full path to the private key file location
 certFile = "cert.crt"  # provide full path to the Certificate file location
 
-KEY = hashlib.sha256(str("adasd").encode('utf-8')).digest()
-IV = "abcdefghijklmnop"  # Initialization vector should always be 16 bit
+KEY = get_random_bytes(16)
 # creating an object to encrypt our data with
-obj = AES.new(KEY, AES.MODE_CFB, IV)
+obj = AES.new(KEY, AES.MODE_CFB)
 
 
 class Server():
@@ -45,10 +45,10 @@ class Client(threading.Thread):
 		nombre = self.sc.read(1024).decode()
 		print("*** El usuario "+nombre +"se ha conectado desde" + str(self.addr))
 		while True:
-			recibido = self.sc.read(1024).decode()
-			if recibido=="quit":
+			recibido = self.sc.read(1024)
+			if recibido.decode()=="quit":
 				break
-			print("[" + nombre + "]" + recibido)
+			print("[" + nombre + "]" + recibido.decode())
 			encrypted = obj.encrypt(recibido)
 			print("encrypted data: "+str(encrypted))
 	  

@@ -1,4 +1,2 @@
-pip install pycrypto
-pip install ndg-httpsclient
-pip install pyopenssl
-pip install pyasn1
+pip install pycryptodome
+pass:asda
