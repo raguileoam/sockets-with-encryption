@@ -28,3 +28,4 @@ The outer layer is of SSL. The method ssl.wrap_socket() will wrap the socket wit
 
 	http://grantcurell.com/2017/03/10/a-simple-ssl-client-and-server-in-python/
 
+Pass Server: asda
