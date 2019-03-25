@@ -9,7 +9,7 @@ certFile = "cert.crt"  # provide full path to the Certificate file location
 
 class Server():
 	def __init__(self):
-		self.host = 'localhost'
+		self.host = '172.40.11.224'
 		self.port = 8880
 		self.maxcon = 1
 
@@ -17,7 +17,7 @@ class Server():
 		self.s = socket.socket()
 		self.s.bind((self.host, self.port))
 		self.s.listen(self.maxcon)
-		s_ssl = ssl.wrap_socket(self.s, ssl_version="TLSv1",keyfile=keyFile, certfile=certFile, server_side=True)
+		s_ssl = ssl.wrap_socket(self.s,keyfile=keyFile, certfile=certFile, server_side=True)
 		while True:
 			sc, addr = s_ssl.accept()
 			client = Client(sc, addr)
